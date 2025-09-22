@@ -1,0 +1,2448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя биография и любимый город</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐼</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Aboreto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .inner-frame {
+            width: 1920px;
+            height: 1080px;
+            background: linear-gradient(135deg, #0C0B0B 0%, #1a1a1a 100%);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            margin: 20px;
+            border: 1px solid #2a2a2a;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .header-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 140px;
+            background: linear-gradient(to bottom, rgba(5, 5, 5, 0.98) 0%, transparent 100%);
+            z-index: 90;
+        }
+
+        .logo {
+            position: absolute;
+            left: 76px;
+            top: 38px;
+            width: 90px;
+            height: 45px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: brightness(0.9);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-container {
+            position: absolute;
+            top: 51px;
+            left: 466px;
+            display: flex;
+            gap: 250px;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-link {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 20px;
+            position: relative;
+            padding: 2px 0;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            min-width: 60px;
+            text-align: center;
+            display: inline-block;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #e0e0e0;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: #fff;
+            font-weight: 400;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-left: 200px;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 5px;
+            font-size: 20px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #5D5858;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            color: #e0e0e0;
+        }
+
+        .lang-btn:hover {
+            color: #fff;
+        }
+
+        .lang-separator {
+            color: #5D5858;
+            line-height: 1;
+        }
+
+        .menu-icon {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+        }
+
+        .menu-line {
+            width: 100%;
+            height: 1px;
+            background: #e0e0e0;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .menu-line:nth-child(1) {
+            transform: translateY(-5px);
+        }
+
+        .menu-line:nth-child(3) {
+            transform: translateY(5px);
+        }
+
+        .menu-icon.open .menu-line:nth-child(1) {
+            transform: rotate(45deg) translate(4px, 4px);
+            width: 80%;
+        }
+
+        .menu-icon.open .menu-line:nth-child(2) {
+            opacity: 0;
+            width: 0;
+        }
+
+        .menu-icon.open .menu-line:nth-child(3) {
+            transform: rotate(-45deg) translate(4px, -4px);
+            width: 80%;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background: rgba(26, 26, 26, 0.95);
+            border-radius: 6px;
+            padding: 10px 0;
+            min-width: 150px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            border: 1px solid #2a2a2a;
+            backdrop-filter: blur(10px);
+        }
+
+        .dropdown-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-link {
+            display: block;
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            transform: translateX(-10px);
+            opacity: 0;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .dropdown-menu.open .dropdown-link {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .dropdown-link:nth-child(1) { transition-delay: 0.1s; }
+        .dropdown-link:nth-child(2) { transition-delay: 0.15s; }
+        .dropdown-link:nth-child(3) { transition-delay: 0.2s; }
+
+        .dropdown-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .slider-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .video-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            object-fit: cover;
+            filter: brightness(0.8);
+        }
+
+        .video-slide.active {
+            opacity: 1;
+        }
+
+        .pixel-indicators {
+            position: absolute;
+            left: 79px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .pixel-indicator {
+            width: 8px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .pixel-indicator.active {
+            width: 100px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .pixel-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: #ffffff;
+            width: 0%;
+            transition: width 5s linear;
+            border-radius: 1px;
+        }
+
+        .pixel-indicator.active .pixel-progress {
+            width: 100%;
+        }
+
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 50;
+            background: rgba(20, 20, 20, 0.8);
+            padding: 70px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .content h1 {
+            font-size: 56px;
+            margin-bottom: 30px;
+            font-weight: 300;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);
+            color: #ffffff;
+        }
+
+        .content p {
+            font-size: 26px;
+            opacity: 0.95;
+            font-weight: 300;
+            line-height: 1.6;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            max-width: 900px;
+            color: #e0e0e0;
+        }
+
+        .start-button {
+            margin-top: 40px;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #c62828, #d32f2f);
+            border: 2px solid #ffab91;
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(198, 40, 40, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(198, 40, 40, 0.6);
+            background: linear-gradient(45deg, #d32f2f, #c62828);
+        }
+
+        .start-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .start-button:hover::before {
+            left: 100%;
+        }
+
+        .info-page, .city-page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 80;
+        }
+
+        .info-page.active, .city-page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .info-background, .city-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0C0B0B 0%, #1a1a1a 100%);
+            opacity: 0.95;
+        }
+
+        .info-content, .city-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 1400px;
+            text-align: center;
+            z-index: 82;
+            height: 90%;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .chinese-brush {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 60px;
+            color: #e0e0e0;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+
+        .info-title, .city-title {
+            font-size: 36px;
+            margin-bottom: 50px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 0.7s forwards;
+        }
+
+        .info-grid, .city-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .info-item, .city-category {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #2a2a2a;
+            opacity: 0;
+            transform: translateY(30px) scale(1);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-item::before, .city-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(0, 0, 0, 0.8) 0%, 
+                rgba(0, 0, 0, 0.7) 50%,
+                rgba(0, 0, 0, 0.8) 100%);
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover::before, .city-category:hover::before {
+            background: linear-gradient(135deg, 
+                rgba(0, 0, 0, 0.6) 0%, 
+                rgba(0, 0, 0, 0.5) 50%,
+                rgba(0, 0, 0, 0.6) 100%);
+        }
+
+        .info-item-background, .city-category-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+            z-index: 0;
+        }
+
+        .info-item:hover .info-item-background, .city-category:hover .city-category-background {
+            opacity: 0.5;
+            transform: scale(1.1);
+        }
+
+        .info-item:nth-child(1) { animation: fadeInUp 1s ease 0.9s forwards; }
+        .info-item:nth-child(2) { animation: fadeInUp 1s ease 1.1s forwards; }
+        .info-item:nth-child(3) { animation: fadeInUp 1s ease 1.3s forwards; }
+        .info-item:nth-child(4) { animation: fadeInUp 1s ease 1.5s forwards; }
+        .info-item:nth-child(5) { animation: fadeInUp 1s ease 1.7s forwards; }
+        .info-item:nth-child(6) { animation: fadeInUp 1s ease 1.9s forwards; }
+
+        .info-item:hover, .city-category:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: #4a4a4a;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-label, .city-category-label {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 2;
+        }
+
+        .info-value, .city-category-value {
+            font-size: 20px;
+            color: #e0e0e0;
+            font-weight: 300;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .telegram-link {
+            color: #0088cc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            z-index: 2;
+        }
+
+        .telegram-link:hover {
+            color: #00aaff;
+            text-decoration: underline;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .back-button.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 0, 0, 0.7);
+            transform: scale(1.1);
+        }
+
+        .back-arrow {
+            width: 20px;
+            height: 20px;
+            border-left: 3px solid #e0e0e0;
+            border-bottom: 3px solid #e0e0e0;
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover .back-arrow {
+            border-color: #ffffff;
+        }
+
+        .expanded-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 999;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+
+        .expanded-card-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 85%;
+            height: 85%;
+            background: rgba(15, 15, 15, 0.98);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.95);
+            padding: 50px;
+            border-radius: 15px;
+            overflow-y: auto;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.4s ease;
+            display: none;
+        }
+
+        .expanded-card-container.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            display: block;
+        }
+
+        .expanded-card-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            filter: blur(5px);
+            z-index: 0;
+        }
+
+        .expanded-card-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+
+        .city-category:nth-child(1) { animation: fadeInUp 1s ease 0.9s forwards; }
+        .city-category:nth-child(2) { animation: fadeInUp 1s ease 1.1s forwards; }
+        .city-category:nth-child(3) { animation: fadeInUp 1s ease 1.3s forwards; }
+        .city-category:nth-child(4) { animation: fadeInUp 1s ease 1.5s forwards; }
+        .city-category:nth-child(5) { animation: fadeInUp 1s ease 1.7s forwards; }
+        .city-category:nth-child(6) { animation: fadeInUp 1s ease 1.9s forwards; }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .gallery-item {
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            height: 200px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            filter: brightness(0.8);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+            filter: brightness(1);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .interactive-element {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 3px solid #4a4a4a;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .interactive-element:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-left-color: #e0e0e0;
+            transform: translateX(5px);
+        }
+
+        .interactive-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .interactive-content {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .interactive-element.active .interactive-content {
+            display: block;
+        }
+
+        .chinese-decoration {
+            position: absolute;
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #e0e0e0, transparent);
+            opacity: 0.3;
+        }
+
+        .decoration-top {
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .decoration-bottom {
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .chinese-symbol {
+            position: absolute;
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 120px;
+            color: rgba(255, 255, 255, 0.03);
+            z-index: 81;
+            user-select: none;
+        }
+
+        .symbol-1 {
+            top: 50px;
+            left: 50px;
+            transform: rotate(-15deg);
+        }
+
+        .symbol-2 {
+            bottom: 50px;
+            right: 50px;
+            transform: rotate(15deg);
+        }
+
+        .video-player {
+            position: relative;
+            width: 100%;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-player video {
+            width: 100%;
+            display: block;
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .video-player:hover .video-controls {
+            opacity: 1;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 5px;
+            padding: 5px;
+        }
+
+        .progress-bar {
+            flex-grow: 1;
+            height: 5px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+            margin: 0 10px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: #e0e0e0;
+            border-radius: 3px;
+            width: 0%;
+        }
+
+        .time {
+            color: white;
+            font-size: 14px;
+            margin: 0 5px;
+        }
+
+        .fullscreen-btn {
+            margin-left: auto;
+        }
+
+        .detail-content {
+            text-align: left;
+        }
+
+        .detail-title {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #ffffff;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+
+        .detail-text {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #e0e0e0;
+        }
+
+        .detail-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .feature-item {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255,255,255,0.08);
+            transform: translateY(-3px);
+        }
+
+        .feature-title {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .feature-value {
+            font-size: 18px;
+            color: #e0e0e0;
+        }
+
+        .card-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card-btn {
+            padding: 8px 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 5px;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .card-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .fact-bubble {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #ff6b6b;
+            transition: all 0.3s ease;
+        }
+
+        .fact-bubble:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .image-grid-item {
+            border-radius: 8px;
+            overflow: hidden;
+            height: 150px;
+        }
+
+        .image-grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .image-grid-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .timeline {
+            position: relative;
+            margin: 30px 0;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff6b6b;
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 5px;
+        }
+
+        .social-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1002;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-modal.active {
+            display: flex;
+        }
+
+        .social-modal-content {
+            background: rgba(20, 20, 20, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+            color: #ffffff;
+        }
+
+        .social-icon {
+            margin-right: 15px;
+            font-size: 20px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .close-modal:hover {
+            color: #ffffff;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0C0B0B;
+            z-index: 9998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .page-transition.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scrollable-content {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        /* Убираем скроллбар */
+        .scrollable-content::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .expanded-card-content::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .info-content::-webkit-scrollbar, .city-content::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        @media (max-width: 1600px) {
+            .info-grid, .city-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 1400px) {
+            .info-grid, .city-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body lang="en">
+    <div class="page-transition"></div>
+    <div class="expanded-background" id="expanded-background"></div>
+    
+    <!-- Модальное окно социальных сетей -->
+    <div class="social-modal" id="social-modal">
+        <div class="social-modal-content">
+            <button class="close-modal" id="close-social-modal">×</button>
+            <h3 data-en="My Social Media" data-ru="Мои социальные сети">My Social Media</h3>
+            <div class="social-links">
+                <a href="https://t.me/kong_cheng_yi" class="social-link" target="_blank">
+                    <span class="social-icon">📱</span>
+                    <span>Telegram</span>
+                </a>
+                <a href="https://vk.com/fjimedia" class="social-link" target="_blank">
+                    <span class="social-icon">👥</span>
+                    <span>VKontakte</span>
+                </a>
+                <a href="https://steamcommunity.com/profiles/76561199002870309/" class="social-link" target="_blank">
+                    <span class="social-icon">🎮</span>
+                    <span>Steam</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Контейнер для расширенной карточки -->
+    <div class="expanded-card-container" id="expanded-card-container">
+        <div class="expanded-card-background" id="expanded-card-background"></div>
+        <div class="expanded-card-content" id="expanded-card-content"></div>
+    </div>
+
+    <div class="inner-frame">
+        <div class="header-overlay"></div>
+        <div class="back-button" id="back-button">
+            <div class="back-arrow"></div>
+        </div>
+
+        <!-- СТРАНИЦА INFO -->
+        <div class="info-page" id="info-page">
+            <div class="info-background"></div>
+            <div class="chinese-symbol symbol-1">人</div>
+            <div class="chinese-symbol symbol-2">道</div>
+            <div class="chinese-decoration decoration-top"></div>
+            <div class="chinese-decoration decoration-bottom"></div>
+
+            <div class="info-content">
+                <div class="chinese-brush">个人资料</div>
+                <h1 class="info-title" data-en="Personal Information" data-ru="Личная информация">Personal Information</h1>
+                
+                <div class="info-grid">
+                    <!-- Имя -->
+                    <div class="info-item" data-type="name">
+                        <div class="info-item-background" style="background-image: url('https://images.unsplash.com/photo-1541963463532-d68292c34b19?w=400')"></div>
+                        <div class="info-label" data-en="Full Name" data-ru="Полное имя">Full Name</div>
+                        <div class="info-value" data-en="Zinoviev Nikita Alekseevich" data-ru="Зиновьев Никита Алексеевич">Zinoviev Nikita Alekseevich</div>
+                        <div class="detail-content" style="display: none;">
+                            <h2 class="detail-title" data-en="About Me" data-ru="Обо мне">About Me</h2>
+                            <p class="detail-text" data-en="My name is Nikita, I am a passionate developer and researcher. Born and raised in Russia, but my heart belongs to China and its rich culture." data-ru="Меня зовут Никита, я увлеченный разработчик и исследователь. Родился и вырос в России, но моё сердце принадлежит Китаю и его богатой культуре.">
+                                My name is Nikita, I am a passionate developer and researcher. Born and raised in Russia, but my heart belongs to China and its rich culture.
+                            </p>
+                            <div class="detail-features">
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Age" data-ru="Возраст">Age</div>
+                                    <div class="feature-value">24</div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Location" data-ru="Местоположение">Location</div>
+                                    <div class="feature-value" data-en="Russia/China" data-ru="Россия/Китай">Russia/China</div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Specialization" data-ru="Специализация">Specialization</div>
+                                    <div class="feature-value" data-en="Web Development" data-ru="Web разработка">Web Development</div>
+                                </div>
+                            </div>
+                            <div class="card-buttons">
+                                <a href="https://github.com/fjimedia" class="card-btn" target="_blank" data-en="View Projects" data-ru="Посмотреть проекты">View Projects</a>
+                                <a href="https://t.me/kong_cheng_yi" class="card-btn" target="_blank" data-en="Contact Me" data-ru="Связаться со мной">Contact Me</a>
+                                <button class="card-btn download-cv" data-en="Download CV" data-ru="Скачать резюме">Download CV</button>
+                            </div>
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2016-2020</div>
+                                    <div class="timeline-content" data-en="Bachelor's Degree in Computer Science" data-ru="Бакалавр компьютерных наук">Bachelor's Degree in Computer Science</div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2020-Present</div>
+                                    <div class="timeline-content" data-en="Freelance Web Developer" data-ru="Фриланс веб-разработчик">Freelance Web Developer</div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2022-Present</div>
+                                    <div class="timeline-content" data-en="Chinese Language Studies" data-ru="Изучение китайского языка">Chinese Language Studies</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Никнейм -->
+                    <div class="info-item" data-type="nickname">
+                        <div class="info-item-background" style="background-image: url('https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400')"></div>
+                        <div class="info-label" data-en="Nickname" data-ru="Никнейм">Nickname</div>
+                        <div class="info-value">fji</div>
+                        <div class="detail-content" style="display: none;">
+                            <h2 class="detail-title" data-en="My Nickname" data-ru="Мой никнейм">My Nickname</h2>
+                            <p class="detail-text" data-en='"fji" is my digital identity that accompanies me in the world of technology and creativity. A simple but memorable name.' data-ru='"fji" - это мой цифровой идентитет, который сопровождает меня в мире технологий и креатива. Простое, но запоминающееся имя.'>
+                                "fji" is my digital identity that accompanies me in the world of technology and creativity. A simple but memorable name.
+                            </p>
+                            <div class="detail-features">
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Origin" data-ru="Происхождение">Origin</div>
+                                    <div class="feature-value" data-en="Personal brand" data-ru="Личный бренд">Personal brand</div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Usage" data-ru="Использование">Usage</div>
+                                    <div class="feature-value" data-en="Since 2018" data-ru="С 2018 года">Since 2018</div>
+                                </div>
+                            </div>
+                            <div class="card-buttons">
+                                <button class="card-btn show-social" data-en="Social Media" data-ru="Соцсети">Social Media</button>
+                                <a href="https://steamcommunity.com/profiles/76561199002870309/" class="card-btn" target="_blank" data-en="Portfolio" data-ru="Портфолио">Portfolio</a>
+                            </div>
+                            <div class="fact-bubble" data-en="The nickname 'fji' was inspired by my favorite programming concepts - functions and iterations." data-ru="Никнейм 'fji' был вдохновлен моими любимыми концепциями программирования - функциями и итерациями.">
+                                The nickname 'fji' was inspired by my favorite programming concepts - functions and iterations.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Email -->
+                    <div class="info-item" data-type="email">
+                        <div class="info-item-background" style="background-image: url('https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400')"></div>
+                        <div class="info-label" data-en="Email" data-ru="Эл. почта">Email</div>
+                        <div class="info-value">thejohnrey@gmail.com</div>
+                        <div class="detail-content" style="display: none;">
+                            <h2 class="detail-title" data-en="Email" data-ru="Электронная почта">Email</h2>
+                            <p class="detail-text" data-en="The main way to contact for business proposals and collaboration. I respond within 24 hours." data-ru="Основной способ связи для деловых предложений и сотрудничества. Отвечаю в течение 24 часов.">
+                                The main way to contact for business proposals and collaboration. I respond within 24 hours.
+                            </p>
+                            <div class="detail-features">
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Type" data-ru="Тип">Type</div>
+                                    <div class="feature-value">Gmail</div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Activity" data-ru="Активность">Activity</div>
+                                    <div class="feature-value" data-en="Daily" data-ru="Ежедневно">Daily</div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Priority" data-ru="Приоритет">Priority</div>
+                                    <div class="feature-value" data-en="High" data-ru="Высокий">High</div>
+                                </div>
+                            </div>
+                            <div class="card-buttons">
+                                <a href="mailto:thejohnrey@gmail.com" class="card-btn" data-en="Send Email" data-ru="Отправить письмо">Send Email</a>
+                                <button class="card-btn add-to-contacts" data-en="Add to Contacts" data-ru="Добавить в контакты">Add to Contacts</button>
+                            </div>
+                            <div class="interactive-element">
+                                <div class="interactive-title" data-en="Email Tips 👆" data-ru="Советы по email 👆">Email Tips 👆</div>
+                                <div class="interactive-content">
+                                    <p data-en="For faster response, please include a clear subject line and brief description of your project or inquiry." data-ru="Для более быстрого ответа, пожалуйста, укажите четкую тему письма и краткое описание вашего проекта или запроса.">
+                                        For faster response, please include a clear subject line and brief description of your project or inquiry.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Телефон -->
+                    <div class="info-item" data-type="phone">
+                        <div class="info-item-background" style="background-image: url('https://images.unsplash.com/photo-1544006659-f0b21884ce1d?w=400')"></div>
+                        <div class="info-label" data-en="Phone" data-ru="Телефон">Phone</div>
+                        <div class="info-value">+79688177383</div>
+                        <div class="detail-content" style="display: none;">
+                            <h2 class="detail-title" data-en="Phone Number" data-ru="Телефонный номер">Phone Number</h2>
+                            <p class="detail-text" data-en="Russian number for urgent communication. Available for calls and WhatsApp." data-ru="Российский номер для срочной связи. Доступен для звонков и WhatsApp.">
+                                Russian number for urgent communication. Available for calls and WhatsApp.
+                            </p>
+                            <div class="detail-features">
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Country" data-ru="Страна">Country</div>
+                                    <div class="feature-value" data-en="Russia" data-ru="Россия">Russia</div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Operator" data-ru="Оператор">Operator</div>
+                                    <div class="feature-value">MTS</div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Availability" data-ru="Доступность">Availability</div>
+                                    <div class="feature-value">9:00 - 22:00</div>
+                                </div>
+                            </div>
+                            <div class="card-buttons">
+                                <a href="tel:+79688177383" class="card-btn" data-en="Call Now" data-ru="Позвонить сейчас">Call Now</a>
+                                <button class="card-btn save-number" data-en="Save Number" data-ru="Сохранить номер">Save Number</button>
+                                <a href="https://wa.me/79688177383" class="card-btn" target="_blank" data-en="WhatsApp" data-ru="WhatsApp">WhatsApp</a>
+                            </div>
+                            <div class="fact-bubble" data-en="I'm most responsive during evening hours (18:00-22:00) when I'm focused on creative work." data-ru="Я наиболее отзывчив в вечерние часы (18:00-22:00), когда сосредоточен на творческой работе.">
+                                I'm most responsive during evening hours (18:00-22:00) when I'm focused on creative work.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Telegram -->
+                    <div class="info-item" data-type="telegram">
+                        <div class="info-item-background" style="background-image: url('https://images.unsplash.com/photo-1517849845537-4d257902454a?w=400')"></div>
+                        <div class="info-label" data-en="Telegram" data-ru="Телеграм">Telegram</div>
+                        <div class="info-value">
+                            <span class="telegram-link">@kong_cheng_yi</span>
+                        </div>
+                        <div class="detail-content" style="display: none;">
+                            <h2 class="detail-title" data-en="Telegram Profile" data-ru="Telegram профиль">Telegram Profile</h2>
+                            <p class="detail-text" data-en="The main messenger for quick communication. I respond promptly, share interesting materials about technology and Chinese culture." data-ru="Основной мессенджер для быстрого общения. Отвечаю оперативно, делюсь интересными материалами о технологиях и китайской культуре.">
+                                The main messenger for quick communication. I respond promptly, share interesting materials about technology and Chinese culture.
+                            </p>
+                            <div class="detail-features">
+                                <div class="feature-item">
+                                    <div class="feature-title">Username</div>
+                                    <div class="feature-value">@kong_cheng_yi</div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Activity" data-ru="Активность">Activity</div>
+                                    <div class="feature-value" data-en="Online daily" data-ru="Онлайн ежедневно">Online daily</div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Content" data-ru="Контент">Content</div>
+                                    <div class="feature-value" data-en="Technology & Culture" data-ru="Технологии & Культура">Technology & Culture</div>
+                                </div>
+                            </div>
+                            <div class="card-buttons">
+                                <a href="https://t.me/kong_cheng_yi" class="card-btn" target="_blank" data-en="Open Telegram" data-ru="Открыть Telegram">Open Telegram</a>
+                                <button class="card-btn join-channel" data-en="Join Channel" data-ru="Присоединиться к каналу">Join Channel</button>
+                            </div>
+                            <div class="image-grid">
+                                <div class="image-grid-item">
+                                    <img src="https://images.unsplash.com/photo-1611605698335-8b1569810432?w=400" alt="Telegram App">
+                                </div>
+                                <div class="image-grid-item">
+                                    <img src="https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=400" alt="Mobile Interface">
+                                </div>
+                                <div class="image-grid-item">
+                                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400" alt="Messaging">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Интересы -->
+                    <div class="info-item" data-type="interests">
+                        <div class="info-item-background" style="background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400')"></div>
+                        <div class="info-label" data-en="Interests" data-ru="Интересы">Interests</div>
+                        <div class="info-value" data-en="Languages & Development" data-ru="Языки & Разработка">Languages & Development</div>
+                        <div class="detail-content" style="display: none;">
+                            <h2 class="detail-title" data-en="My Interests" data-ru="Мои интересы">My Interests</h2>
+                            <p class="detail-text" data-en="I'm passionate about learning languages, web development, photography, and exploring different cultures. My main focus is on English and Chinese language studies, which help me connect with people from around the world." data-ru="Я увлекаюсь изучением языков, веб-разработкой, фотографией и исследованием различных культур. Основное внимание уделяю изучению английского и китайского языков, что помогает мне общаться с людьми со всего мира.">
+                                I'm passionate about learning languages, web development, photography, and exploring different cultures. My main focus is on English and Chinese language studies, which help me connect with people from around the world.
+                            </p>
+                            <div class="detail-features">
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Languages" data-ru="Языки">Languages</div>
+                                    <div class="feature-value" data-en="English, Chinese" data-ru="Английский, Китайский">English, Chinese</div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Development" data-ru="Разработка">Development</div>
+                                    <div class="feature-value" data-en="Web, Mobile" data-ru="Веб, Мобильная">Web, Mobile</div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-title" data-en="Other" data-ru="Другое">Other</div>
+                                    <div class="feature-value" data-en="Photography, Travel" data-ru="Фотография, Путешествия">Photography, Travel</div>
+                                </div>
+                            </div>
+                            <div class="card-buttons">
+                                <a href="https://steamcommunity.com/profiles/76561199002870309/" class="card-btn" target="_blank" data-en="View Portfolio" data-ru="Посмотреть портфолио">View Portfolio</a>
+                                <button class="card-btn language-progress" data-en="Language Progress" data-ru="Прогресс в языках">Language Progress</button>
+                                <button class="card-btn photo-gallery" data-en="Photo Gallery" data-ru="Фотогалерея">Photo Gallery</button>
+                            </div>
+                            <div class="interactive-element">
+                                <div class="interactive-title" data-en="Language Progress 👆" data-ru="Прогресс в языках 👆">Language Progress 👆</div>
+                                <div class="interactive-content">
+                                    <p data-en="Currently at HSK 3 level in Chinese and C1 level in English. Daily practice includes watching movies, reading books, and conversation practice with native speakers." data-ru="В настоящее время изучаю китайский на уровне HSK 3 и английский на уровне C1. Ежедневная практика включает просмотр фильмов, чтение книг и разговорную практику с носителями языка.">
+                                        Currently at HSK 3 level in Chinese and C1 level in English. Daily practice includes watching movies, reading books, and conversation practice with native speakers.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="fact-bubble" data-en="I believe that learning languages opens doors to understanding different cultures and perspectives." data-ru="Я считаю, что изучение языков открывает двери к пониманию разных культур и перспектив.">
+                                I believe that learning languages opens doors to understanding different cultures and perspectives.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА ГОРОДА -->
+        <div class="city-page" id="city-page">
+            <div class="city-background"></div>
+            <div class="chinese-symbol symbol-1">城</div>
+            <div class="chinese-symbol symbol-2">都</div>
+            <div class="chinese-decoration decoration-top"></div>
+            <div class="chinese-decoration decoration-bottom"></div>
+
+            <div class="city-content">
+                <div class="chinese-brush">成都</div>
+                <h1 class="city-title" data-en="Chengdu - The Heavenly City" data-ru="Чэнду - Небесный город">Chengdu - The Heavenly City</h1>
+                
+                <div class="city-grid">
+                    <!-- Природа -->
+                    <div class="city-category" data-type="nature">
+                        <div class="city-category-background" style="background-image: url('https://images.unsplash.com/photo-1528127269322-539801943592?w=400')"></div>
+                        <div class="city-category-label" data-en="Nature" data-ru="Природа">Nature</div>
+                        <div class="city-category-value" data-en="Pandas & Landscapes" data-ru="Панды & Пейзажи">Pandas & Landscapes</div>
+                        <div class="detail-content" style="display: none;">
+                            <h2 class="detail-title" data-en="Nature of Chengdu" data-ru="Природа Чэнду">Nature of Chengdu</h2>
+                            <p class="detail-text" data-en="Chengdu is home to 80% of the world's giant pandas. The city is surrounded by breathtaking natural landscapes, including the famous Jiuzhaigou Valley and Mount Qingcheng. The mild climate and abundant rainfall make Chengdu one of the most ecologically diverse regions in China." data-ru="Чэнду является домом для 80% всех больших панд в мире. Город окружен захватывающими дух природными ландшафтами, включая знаменитую долину Цзючжайгоу и гору Цинчэн. Мягкий климат и обильные осадки делают Чэнду одним из самых экологически разнообразных регионов Китая.">
+                                Chengdu is home to 80% of the world's giant pandas. The city is surrounded by breathtaking natural landscapes, including the famous Jiuzhaigou Valley and Mount Qingcheng. The mild climate and abundant rainfall make Chengdu one of the most ecologically diverse regions in China.
+                            </p>
+                            
+                            <div class="video-player">
+                                <video muted>
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-group-of-pandas-eating-bamboo-45439-large.mp4" type="video/mp4">
+                                </video>
+                                <div class="video-controls">
+                                    <button class="control-btn play-pause">▶</button>
+                                    <div class="progress-bar">
+                                        <div class="progress"></div>
+                                    </div>
+                                    <span class="time current-time">0:00</span>
+                                    <span class="time">/</span>
+                                    <span class="time total-time">0:00</span>
+                                    <button class="control-btn volume-btn">🔊</button>
+                                    <button class="control-btn fullscreen-btn">⛶</button>
+                                </div>
+                            </div>
+                            
+                            <div class="gallery">
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1528127269322-539801943592?w=400" alt="Panda">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1544984243-ec57ea16fe25?w=400" alt="Bamboo Forest">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1580502304784-8985b7eb7260?w=400" alt="Jiuzhaigou Valley">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1578301978896-3d13e02c941a?w=400" alt="Mount Qingcheng">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1578301978064-46754f5a2383?w=400" alt="Chengdu Park">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1578301978328-37d53d1c290d?w=400" alt="Panda Research Base">
+                                </div>
+                            </div>
+                            
+                            <div class="card-buttons">
+                                <a href="https://www.pinterest.com/search/pins/?q=chengdu%20pandas" class="card-btn" target="_blank" data-en="Panda Facts" data-ru="Факты о пандах">Panda Facts</a>
+                                <a href="https://www.pinterest.com/search/pins/?q=chengdu%20nature" class="card-btn" target="_blank" data-en="Nature Reserves" data-ru="Заповедники">Nature Reserves</a>
+                                <a href="https://www.tripadvisor.com/Attractions-g297463-Activities-c57-t187-Chengdu_Sichuan.html" class="card-btn" target="_blank" data-en="Best Seasons" data-ru="Лучшие сезоны">Best Seasons</a>
+                            </div>
+                            
+                            <div class="fact-bubble" data-en="Chengdu is the only city in the world with a giant panda breeding research base inside the city limits." data-ru="Чэнду - единственный город в мире, в черте которого находится исследовательская база по разведению больших панд.">
+                                Chengdu is the only city in the world with a giant panda breeding research base inside the city limits.
+                            </div>
+                            
+                            <div class="fact-bubble" data-en="The Dujiangyan Irrigation System, built in 256 BC, is still functioning today and is a UNESCO World Heritage Site." data-ru="Ирригационная система Дуцзянъянь, построенная в 256 году до н.э., до сих пор функционирует и является объектом Всемирного наследия ЮНЕСКО.">
+                                The Dujiangyan Irrigation System, built in 256 BC, is still functioning today and is a UNESCO World Heritage Site.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Культура -->
+                    <div class="city-category" data-type="culture">
+                        <div class="city-category-background" style="background-image: url('https://images.unsplash.com/photo-1531565637446-32307a194760?w=400')"></div>
+                        <div class="city-category-label" data-en="Culture" data-ru="Культура">Culture</div>
+                        <div class="city-category-value" data-en="People & Traditions" data-ru="Люди & Традиции">People & Traditions</div>
+                        <div class="detail-content" style="display: none;">
+                            <h2 class="detail-title" data-en="Culture of Chengdu" data-ru="Культура Чэнду">Culture of Chengdu</h2>
+                            <p class="detail-text" data-en="Chengdu is known for its relaxed lifestyle and tea culture. The city has over 2000 years of history and is the birthplace of Sichuan opera with its famous face-changing performances. Chengdu people are known for their hospitality and love for leisure activities, often spending hours in tea houses playing mahjong or chatting with friends." data-ru="Чэнду известен своим расслабленным образом жизни и чайной культурой. Город насчитывает более 2000 лет истории и является родиной сычуаньской оперы с ее знаменитыми представлениями по смене масок. Жители Чэнду известны своим гостеприимством и любовью к досугу, часто проводя часы в чайных домах, играя в маджонг или общаясь с друзьями.">
+                                Chengdu is known for its relaxed lifestyle and tea culture. The city has over 2000 years of history and is the birthplace of Sichuan opera with its famous face-changing performances. Chengdu people are known for their hospitality and love for leisure activities, often spending hours in tea houses playing mahjong or chatting with friends.
+                            </p>
+                            
+                            <div class="video-player">
+                                <video muted>
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-red-chinese-lanterns-hanging-on-a-street-43986-large.mp4" type="video/mp4">
+                                </video>
+                                <div class="video-controls">
+                                    <button class="control-btn play-pause">▶</button>
+                                    <div class="progress-bar">
+                                        <div class="progress"></div>
+                                    </div>
+                                    <span class="time current-time">0:00</span>
+                                    <span class="time">/</span>
+                                    <span class="time total-time">0:00</span>
+                                    <button class="control-btn volume-btn">🔊</button>
+                                    <button class="control-btn fullscreen-btn">⛶</button>
+                                </div>
+                            </div>
+                            
+                            <div class="gallery">
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1531565637446-32307a194760?w=400" alt="Tea Culture">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1575351327023-0a6c00a6d5f6?w=400" alt="Sichuan Opera">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1547981609-4b6bfc67c272?w=400" alt="Traditional Architecture">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1573767291321-8aa4c9424a6a?w=400" alt="Ancient Temple">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1573767291321-8aa4c9424a6a?w=400" alt="Cultural Festival">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1573767291321-8aa4c9424a6a?w=400" alt="Traditional Crafts">
+                                </div>
+                            </div>
+                            
+                            <div class="card-buttons">
+                                <a href="https://www.pinterest.com/search/pins/?q=chengdu%20tea%20culture" class="card-btn" target="_blank" data-en="Tea Houses" data-ru="Чайные дома">Tea Houses</a>
+                                <a href="https://www.pinterest.com/search/pins/?q=sichuan%20opera" class="card-btn" target="_blank" data-en="Sichuan Opera" data-ru="Сычуаньская опера">Sichuan Opera</a>
+                                <a href="https://www.pinterest.com/search/pins/?q=chengdu%20festivals" class="card-btn" target="_blank" data-en="Traditional Festivals" data-ru="Традиционные фестивали">Traditional Festivals</a>
+                            </div>
+                            
+                            <div class="fact-bubble" data-en="Chengdu has the highest number of tea houses in the world, with over 10,000 establishments throughout the city." data-ru="В Чэнду самое большое количество чайных домов в мире - более 10 000 заведений по всему городу.">
+                                Chengdu has the highest number of tea houses in the world, with over 10,000 establishments throughout the city.
+                            </div>
+                            
+                            <div class="fact-bubble" data-en="The face-changing technique in Sichuan opera is a protected state secret, and performers must swear not to reveal how it's done." data-ru="Техника смены масок в сычуаньской опере является охраняемой государственной тайной, и исполнители должны поклясться не раскрывать, как это делается.">
+                                The face-changing technique in Sichuan opera is a protected state secret, and performers must swear not to reveal how it's done.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Кухня -->
+                    <div class="city-category" data-type="cuisine">
+                        <div class="city-category-background" style="background-image: url('https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400')"></div>
+                        <div class="city-category-label" data-en="Cuisine" data-ru="Кухня">Cuisine</div>
+                        <div class="city-category-value" data-en="Sichuan Food & Hot Pot" data-ru="Сычуаньская еда & Хот-пот">Sichuan Food & Hot Pot</div>
+                        <div class="detail-content" style="display: none;">
+                            <h2 class="detail-title" data-en="Chengdu Cuisine" data-ru="Кухня Чэнду">Chengdu Cuisine</h2>
+                            <p class="detail-text" data-en="Chengdu is a UNESCO City of Gastronomy, famous for its spicy Sichuan cuisine. The city is the birthplace of hot pot and mapo tofu, with flavors that are both numbing and spicy. Sichuan peppercorns create the unique 'mala' sensation that defines this regional cuisine. From street food stalls to Michelin-starred restaurants, Chengdu offers an incredible culinary journey." data-ru="Чэнду является городом гастрономии ЮНЕСКО, известным своей острой сычуаньской кухней. Город является родиной хот-пота и тофу мапо, с вкусами, которые одновременно ошеломляющие и острые. Сычуаньский перец создает уникальное ощущение 'мала', которое определяет кухню этого региона. От уличных ларьков до ресторанов со звездами Мишлен, Чэнду предлагает невероятное кулинарное путешествие.">
+                                Chengdu is a UNESCO City of Gastronomy, famous for its spicy Sichuan cuisine. The city is the birthplace of hot pot and mapo tofu, with flavors that are both numbing and spicy. Sichuan peppercorns create the unique 'mala' sensation that defines this regional cuisine. From street food stalls to Michelin-starred restaurants, Chengdu offers an incredible culinary journey.
+                            </p>
+                            
+                            <div class="video-player">
+                                <video muted>
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-close-up-shot-of-a-red-chinese-lantern-43987-large.mp4" type="video/mp4">
+                                </video>
+                                <div class="video-controls">
+                                    <button class="control-btn play-pause">▶</button>
+                                    <div class="progress-bar">
+                                        <div class="progress"></div>
+                                    </div>
+                                    <span class="time current-time">0:00</span>
+                                    <span class="time">/</span>
+                                    <span class="time total-time">0:00</span>
+                                    <button class="control-btn volume-btn">🔊</button>
+                                    <button class="control-btn fullscreen-btn">⛶</button>
+                                </div>
+                            </div>
+                            
+                            <div class="gallery">
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400" alt="Hot Pot">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400" alt="Sichuan Cuisine">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1519733775-c6e14c6f5c16?w=400" alt="Street Food">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400" alt="Spicy Dishes">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1519733775-c6e14c6f5c16?w=400" alt="Local Market">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400" alt="Cooking Class">
+                                </div>
+                            </div>
+                            
+                            <div class="card-buttons">
+                                <a href="https://www.pinterest.com/search/pins/?q=chengdu%20hot%20pot" class="card-btn" target="_blank" data-en="Hot Pot Guide" data-ru="Гид по хот-потам">Hot Pot Guide</a>
+                                <a href="https://www.pinterest.com/search/pins/?q=sichuan%20cuisine" class="card-btn" target="_blank" data-en="Must-Try Dishes" data-ru="Блюда, которые стоит попробовать">Must-Try Dishes</a>
+                                <a href="https://www.pinterest.com/search/pins/?q=chengdu%20cooking%20classes" class="card-btn" target="_blank" data-en="Cooking Classes" data-ru="Кулинарные классы">Cooking Classes</a>
+                            </div>
+                            
+                            <div class="fact-bubble" data-en="Sichuan peppercorns don't just add heat - they create a tingling, numbing sensation called 'málà' that is unique to this region's cuisine." data-ru="Сычуаньский перец не просто добавляет остроту - он создает покалывающее, ошеломляющее ощущение под названием 'мала', которое уникально для кухни этого региона.">
+                                Sichuan peppercorns don't just add heat - they create a tingling, numbing sensation called 'málà' that is unique to this region's cuisine.
+                            </div>
+                            
+                            <div class="fact-bubble" data-en="Chengdu has more than 40,000 restaurants, making it one of the cities with the highest restaurant density in the world." data-ru="В Чэнду более 40 000 ресторанов, что делает его одним из городов с самой высокой плотностью ресторанов в мире.">
+                                Chengdu has more than 40,000 restaurants, making it one of the cities with the highest restaurant density in the world.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Достопримечательности -->
+                    <div class="city-category" data-type="attractions">
+                        <div class="city-category-background" style="background-image: url('https://images.unsplash.com/photo-1596436889106-be35e8433c6b?w=400')"></div>
+                        <div class="city-category-label" data-en="Attractions" data-ru="Достопримечательности">Attractions</div>
+                        <div class="city-category-value" data-en="Landmarks & History" data-ru="Памятники & История">Landmarks & History</div>
+                        <div class="detail-content" style="display: none;">
+                            <h2 class="detail-title" data-en="Chengdu Attractions" data-ru="Достопримечательности Чэнду">Chengdu Attractions</h2>
+                            <p class="detail-text" data-en="From ancient temples to modern architecture, Chengdu offers a blend of historical and contemporary attractions. The city is home to the famous Jinli Street, Wuhou Shrine, and the stunning New Century Global Center. Visitors can explore centuries-old Buddhist temples, stroll through traditional markets, and admire futuristic skyscrapers all in one day." data-ru="От древних храмов до современной архитектуры, Чэнду предлагает смесь исторических и современных достопримечательностей. Город является домом для знаменитой улицы Цзиньли, храма Ухоу и потрясающего Нового всемирного центра. Посетители могут исследовать многовековые буддийские храмы, прогуляться по традиционным рынкам и полюбоваться футуристическими небоскребами всего за один день.">
+                                From ancient temples to modern architecture, Chengdu offers a blend of historical and contemporary attractions. The city is home to the famous Jinli Street, Wuhou Shrine, and the stunning New Century Global Center. Visitors can explore centuries-old Buddhist temples, stroll through traditional markets, and admire futuristic skyscrapers all in one day.
+                            </p>
+                            
+                            <div class="video-player">
+                                <video muted>
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-chinese-city-43985-large.mp4" type="video/mp4">
+                                </video>
+                                <div class="video-controls">
+                                    <button class="control-btn play-pause">▶</button>
+                                    <div class="progress-bar">
+                                        <div class="progress"></div>
+                                    </div>
+                                    <span class="time current-time">0:00</span>
+                                    <span class="time">/</span>
+                                    <span class="time total-time">0:00</span>
+                                    <button class="control-btn volume-btn">🔊</button>
+                                    <button class="control-btn fullscreen-btn">⛶</button>
+                                </div>
+                            </div>
+                            
+                            <div class="gallery">
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1596436889106-be35e8433c6b?w=400" alt="Jinli Street">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1573767291321-8aa4c9424a6a?w=400" alt="Wuhou Shrine">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1573767291321-8aa4c9424a6a?w=400" alt="Global Center">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1596436889106-be35e8433c6b?w=400" alt="Ancient Architecture">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1573767291321-8aa4c9424a6a?w=400" alt="Modern Buildings">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1573767291321-8aa4c9424a6a?w=400" alt="City Park">
+                                </div>
+                            </div>
+                            
+                            <div class="card-buttons">
+                                <a href="https://www.pinterest.com/search/pins/?q=chengdu%20historical%20sites" class="card-btn" target="_blank" data-en="Historical Sites" data-ru="Исторические места">Historical Sites</a>
+                                <a href="https://www.pinterest.com/search/pins/?q=chengdu%20modern%20architecture" class="card-btn" target="_blank" data-en="Modern Attractions" data-ru="Современные достопримечательности">Modern Attractions</a>
+                                <a href="https://www.tripadvisor.com/Attractions-g297463-Activities-Chengdu_Sichuan.html" class="card-btn" target="_blank" data-en="Tour Routes" data-ru="Туристические маршруты">Tour Routes</a>
+                            </div>
+                            
+                            <div class="fact-bubble" data-en="The Wuhou Shrine is dedicated to Zhuge Liang, a famous military strategist of the Three Kingdoms period, who is revered as the greatest strategist in Chinese history." data-ru="Храм Ухоу посвящен Чжугэ Ляну, известному военному стратегу периода Троецарствия, который почитается как величайший стратег в китайской истории.">
+                                The Wuhou Shrine is dedicated to Zhuge Liang, a famous military strategist of the Three Kingdoms period, who is revered as the greatest strategist in Chinese history.
+                            </div>
+                            
+                            <div class="fact-bubble" data-en="The New Century Global Center is the largest building in the world by floor area, covering 1.7 million square meters." data-ru="Новый всемирный центр - самое большое здание в мире по площади пола, занимающее 1,7 миллиона квадратных метров.">
+                                The New Century Global Center is the largest building in the world by floor area, covering 1.7 million square meters.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Современность -->
+                    <div class="city-category" data-type="modern">
+                        <div class="city-category-background" style="background-image: url('https://images.unsplash.com/photo-1583513364301-f9339bc6122c?w=400')"></div>
+                        <div class="city-category-label" data-en="Modern Chengdu" data-ru="Современный Чэнду">Modern Chengdu</div>
+                        <div class="city-category-value" data-en="Technology & Innovation" data-ru="Технологии & Инновации">Technology & Innovation</div>
+                        <div class="detail-content" style="display: none;">
+                            <h2 class="detail-title" data-en="Modern Chengdu" data-ru="Современный Чэнду">Modern Chengdu</h2>
+                            <p class="detail-text" data-en="Chengdu is a major technological hub in Western China, home to many Fortune 500 companies. The city seamlessly blends ancient traditions with modern innovation, creating a unique urban experience. With its thriving tech industry, Chengdu has become a center for aerospace, biotechnology, and electronic information industries. The city's startup scene is booming, attracting young entrepreneurs from across China." data-ru="Чэнду является крупным технологическим центром в Западном Китае, где расположены многие компании из списка Fortune 500. Город гармонично сочетает древние традиции с современными инновациями, создавая уникальный городской опыт. Благодаря развитой технологической индустрии, Чэнду стал центром аэрокосмической, биотехнологической и электронной информационной промышленности. Стартап-сцена города процветает, привлекая молодых предпринимателей со всего Китая.">
+                                Chengdu is a major technological hub in Western China, home to many Fortune 500 companies. The city seamlessly blends ancient traditions with modern innovation, creating a unique urban experience. With its thriving tech industry, Chengdu has become a center for aerospace, biotechnology, and electronic information industries. The city's startup scene is booming, attracting young entrepreneurs from across China.
+                            </p>
+                            
+                            <div class="video-player">
+                                <video muted>
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-bamboo-forest-in-the-wind-43988-large.mp4" type="video/mp4">
+                                </video>
+                                <div class="video-controls">
+                                    <button class="control-btn play-pause">▶</button>
+                                    <div class="progress-bar">
+                                        <div class="progress"></div>
+                                    </div>
+                                    <span class="time current-time">0:00</span>
+                                    <span class="time">/</span>
+                                    <span class="time total-time">0:00</span>
+                                    <button class="control-btn volume-btn">🔊</button>
+                                    <button class="control-btn fullscreen-btn">⛶</button>
+                                </div>
+                            </div>
+                            
+                            <div class="gallery">
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1583513364301-f9339bc6122c?w=400" alt="Modern Architecture">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400" alt="Business District">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400" alt="Tech Park">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1583513364301-f9339bc6122c?w=400" alt="Innovation Center">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400" alt="Smart City">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400" alt="Research Institute">
+                                </div>
+                            </div>
+                            
+                            <div class="card-buttons">
+                                <a href="https://www.pinterest.com/search/pins/?q=chengdu%20technology%20companies" class="card-btn" target="_blank" data-en="Tech Companies" data-ru="Технологические компании">Tech Companies</a>
+                                <a href="https://www.pinterest.com/search/pins/?q=chengdu%20innovation%20hub" class="card-btn" target="_blank" data-en="Innovation Hubs" data-ru="Инновационные центры">Innovation Hubs</a>
+                                <a href="https://www.pinterest.com/search/pins/?q=chengdu%20future%20projects" class="card-btn" target="_blank" data-en="Future Projects" data-ru="Будущие проекты">Future Projects</a>
+                            </div>
+                            
+                            <div class="fact-bubble" data-en="Chengdu is sometimes called China's 'Silicon Valley of the West' and is home to the Tianfu Software Park, one of the largest software industry bases in China." data-ru="Чэнду иногда называют 'Кремниевой долиной Запада' Китая, и здесь находится Технопарк Тяньфу, одна из крупнейших баз программной индустрии в Китае.">
+                                Chengdu is sometimes called China's 'Silicon Valley of the West' and is home to the Tianfu Software Park, one of the largest software industry bases in China.
+                            </div>
+                            
+                            <div class="fact-bubble" data-en="Chengdu is home to more than 300 Fortune 500 companies, including Intel, Foxconn, and Toyota." data-ru="В Чэнду расположены более 300 компаний из списка Fortune 500, включая Intel, Foxconn и Toyota.">
+                                Chengdu is home to more than 300 Fortune 500 companies, including Intel, Foxconn, and Toyota.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ночная жизнь -->
+                    <div class="city-category" data-type="nightlife">
+                        <div class="city-category-background" style="background-image: url('https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400')"></div>
+                        <div class="city-category-label" data-en="Nightlife" data-ru="Ночная жизнь">Nightlife</div>
+                        <div class="city-category-value" data-en="Bars & Entertainment" data-ru="Бары & Развлечения">Bars & Entertainment</div>
+                        <div class="detail-content" style="display: none;">
+                            <h2 class="detail-title" data-en="Chengdu Nightlife" data-ru="Ночная жизнь Чэнду">Chengdu Nightlife</h2>
+                            <p class="detail-text" data-en="Chengdu comes alive at night with vibrant nightlife options. From traditional tea houses to modern bars and clubs, the city offers diverse entertainment for every taste. The night markets are particularly famous, offering delicious street food, souvenirs, and live performances. Whether you prefer a quiet evening in a jazz bar or dancing until dawn, Chengdu has something for everyone." data-ru="Чэнду оживает ночью с яркими вариантами ночной жизни. От традиционных чайных домов до современных баров и клубов, город предлагает разнообразные развлечения на любой вкус. Ночные рынки особенно знамениты, предлагая вкусную уличную еду, сувениры и живые выступления. Независимо от того, предпочитаете ли вы тихий вечер в джаз-баре или танцы до рассвета, в Чэнду есть что-то для каждого.">
+                                Chengdu comes alive at night with vibrant nightlife options. From traditional tea houses to modern bars and clubs, the city offers diverse entertainment for every taste. The night markets are particularly famous, offering delicious street food, souvenirs, and live performances. Whether you prefer a quiet evening in a jazz bar or dancing until dawn, Chengdu has something for everyone.
+                            </p>
+                            
+                            <div class="video-player">
+                                <video muted>
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-chinese-city-at-night-43989-large.mp4" type="video/mp4">
+                                </video>
+                                <div class="video-controls">
+                                    <button class="control-btn play-pause">▶</button>
+                                    <div class="progress-bar">
+                                        <div class="progress"></div>
+                                    </div>
+                                    <span class="time current-time">0:00</span>
+                                    <span class="time">/</span>
+                                    <span class="time total-time">0:00</span>
+                                    <button class="control-btn volume-btn">🔊</button>
+                                    <button class="control-btn fullscreen-btn">⛶</button>
+                                </div>
+                            </div>
+                            
+                            <div class="gallery">
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400" alt="Night View">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400" alt="Bar Street">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1566737239101-527891834a8e?w=400" alt="Night Market">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400" alt="Live Music">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400" alt="Night Club">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="https://images.unsplash.com/photo-1566737239101-527891834a8e?w=400" alt="Street Performance">
+                                </div>
+                            </div>
+                            
+                            <div class="card-buttons">
+                                <a href="https://www.pinterest.com/search/pins/?q=chengdu%20nightlife%20bars" class="card-btn" target="_blank" data-en="Best Bars" data-ru="Лучшие бары">Best Bars</a>
+                                <a href="https://www.pinterest.com/search/pins/?q=chengdu%20night%20markets" class="card-btn" target="_blank" data-en="Night Markets" data-ru="Ночные рынки">Night Markets</a>
+                                <a href="https://www.pinterest.com/search/pins/?q=chengdu%20live%20music" class="card-btn" target="_blank" data-en="Live Music" data-ru="Живая музыка">Live Music</a>
+                            </div>
+                            
+                            <div class="fact-bubble" data-en="The Lan Kwai Fong area is Chengdu's most famous nightlife district, featuring hundreds of bars, clubs, and restaurants that stay open until the early hours." data-ru="Район Лань Kwai Фонг является самым известным ночным районом Чэнду, где расположены сотни баров, клубов и ресторанов, которые работают до раннего утра.">
+                                The Lan Kwai Fong area is Chengdu's most famous nightlife district, featuring hundreds of bars, clubs, and restaurants that stay open until the early hours.
+                            </div>
+                            
+                            <div class="fact-bubble" data-en="Chengdu's night markets often stay open until 2-3 AM, offering a wide variety of Sichuan snacks and street food." data-ru="Ночные рынки Чэнду часто работают до 2-3 часов ночи, предлагая широкий выбор сычуаньских закусок и уличной еды.">
+                                Chengdu's night markets often stay open until 2-3 AM, offering a wide variety of Sichuan snacks and street food.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ВИДЕО СЛАЙДЕР -->
+        <div class="slider-container" id="main-slider">
+            <video class="video-slide active" muted loop>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-group-of-pandas-eating-bamboo-45439-large.mp4" type="video/mp4">
+            </video>
+            <video class="video-slide" muted loop>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-chinese-city-43985-large.mp4" type="video/mp4">
+            </video>
+            <video class="video-slide" muted loop>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-red-chinese-lanterns-hanging-on-a-street-43986-large.mp4" type="video/mp4">
+            </video>
+            <video class="video-slide" muted loop>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-close-up-shot-of-a-red-chinese-lantern-43987-large.mp4" type="video/mp4">
+            </video>
+            <video class="video-slide" muted loop>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-bamboo-forest-in-the-wind-43988-large.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <!-- Индикаторы-пиксели -->
+        <div class="pixel-indicators" id="pixel-indicators">
+            <div class="pixel-indicator active" data-slide="0">
+                <div class="pixel-progress"></div>
+            </div>
+            <div class="pixel-indicator" data-slide="1">
+                <div class="pixel-progress"></div>
+            </div>
+            <div class="pixel-indicator" data-slide="2">
+                <div class="pixel-progress"></div>
+            </div>
+            <div class="pixel-indicator" data-slide="3">
+                <div class="pixel-progress"></div>
+            </div>
+            <div class="pixel-indicator" data-slide="4">
+                <div class="pixel-progress"></div>
+            </div>
+        </div>
+
+        <!-- Контент главной страницы -->
+        <div class="content" id="main-content">
+            <h1 data-en="My Biography & Chengdu" data-ru="Моя биография и Чэнду">My Biography & Chengdu</h1>
+            <p data-en="Discover my life journey and the beautiful city that captured my heart - Chengdu, where ancient traditions meet modern life in perfect harmony. The land of pandas, spicy cuisine, and breathtaking landscapes." data-ru="Узнайте о моем жизненном пути и прекрасном городе, который покорил мое сердце - Чэнду, где древние традиции встречаются с современной жизнью в идеальной гармонии. Земля панд, острой кухни и захватывающих дух пейзажей.">
+                Discover my life journey and the beautiful city that captured my heart - Chengdu, where ancient traditions meet modern life in perfect harmony. The land of pandas, spicy cuisine, and breathtaking landscapes.
+            </p>
+            <button class="start-button" id="start-button" data-en="Explore Now" data-ru="Исследовать">Explore Now</button>
+        </div>
+
+        <!-- Логотип -->
+        <div class="logo" id="logo">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTAiIGhlaWdodD0iNDUiIHZpZXdCb3g9IjAgMCA5MCA0NSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjkwIiBoZWlnaHQ9IjQ1IiByeD0iNCIgZmlsbD0iIzAwMDAwMCIvPgo8dGV4dCB4PSI0NSIgeT0iMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZmppPC90ZXh0Pgo8L3N2Zz4K" alt="Logo">
+        </div>
+
+        <!-- Навигация -->
+        <div class="nav-container">
+            <a href="#home" class="nav-link active" data-en="Home" data-ru="Главная">Home</a>
+            <a href="#info" class="nav-link" data-en="Info" data-ru="Инфо">Info</a>
+            <a href="#city" class="nav-link" data-en="City" data-ru="Город">City</a>
+            
+            <div class="nav-right">
+                <div class="language-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <span class="lang-separator">|</span>
+                    <button class="lang-btn" data-lang="ru">RU</button>
+                </div>
+                
+                <div class="menu-icon">
+                    <div class="menu-line"></div>
+                    <div class="menu-line"></div>
+                    <div class="menu-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Выпадающее меню -->
+        <div class="dropdown-menu">
+            <a href="#home" class="dropdown-link" data-en="Home" data-ru="Главная">Home</a>
+            <a href="#info" class="dropdown-link" data-en="Info" data-ru="Инфо">Info</a>
+            <a href="#city" class="dropdown-link" data-en="City" data-ru="Город">City</a>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // МОДАЛЬНОЕ ОКНО СОЦИАЛЬНЫХ СЕТЕЙ
+        const socialModal = document.getElementById('social-modal');
+        const closeSocialModal = document.getElementById('close-social-modal');
+        const showSocialButtons = document.querySelectorAll('.show-social');
+
+        showSocialButtons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                socialModal.classList.add('active');
+            });
+        });
+
+        closeSocialModal.addEventListener('click', function() {
+            socialModal.classList.remove('active');
+        });
+
+        socialModal.addEventListener('click', function(e) {
+            if (e.target === socialModal) {
+                socialModal.classList.remove('active');
+            }
+        });
+
+        // ФУНКЦИОНАЛ ДЛЯ КНОПКИ CV
+        const downloadCvButtons = document.querySelectorAll('.download-cv');
+        
+        downloadCvButtons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const cvModal = document.createElement('div');
+                cvModal.className = 'social-modal active';
+                cvModal.innerHTML = `
+                    <div class="social-modal-content">
+                        <button class="close-modal">×</button>
+                        <h3 data-en="My Creative Journey" data-ru="Мое творческое путешествие">My Creative Journey</h3>
+                        <div class="social-links">
+                            <a href="https://read.cv/fji" class="social-link" target="_blank">
+                                <span class="social-icon">📄</span>
+                                <span>Interactive CV</span>
+                            </a>
+                            <a href="https://github.com/fjimedia" class="social-link" target="_blank">
+                                <span class="social-icon">💻</span>
+                                <span>GitHub Portfolio</span>
+                            </a>
+                            <a href="https://www.behance.net/fjimedia" class="social-link" target="_blank">
+                                <span class="social-icon">🎨</span>
+                                <span>Design Projects</span>
+                            </a>
+                        </div>
+                        <p style="margin-top: 20px; color: #888; font-size: 14px;">
+                            <span data-en="Explore my digital footprint across various platforms" data-ru="Исследуйте мой цифровой след на различных платформах">Explore my digital footprint across various platforms</span>
+                        </p>
+                    </div>
+                `;
+                
+                document.body.appendChild(cvModal);
+                
+                cvModal.querySelector('.close-modal').addEventListener('click', function() {
+                    cvModal.remove();
+                });
+                
+                cvModal.addEventListener('click', function(e) {
+                    if (e.target === cvModal) {
+                        cvModal.remove();
+                    }
+                });
+            });
+        });
+
+        // ОСНОВНОЙ КОД УПРАВЛЕНИЯ КАРТОЧКАМИ
+        const infoItems = document.querySelectorAll('.info-item, .city-category');
+        const backButton = document.getElementById('back-button');
+        const expandedBackground = document.getElementById('expanded-background');
+        const expandedCardContainer = document.getElementById('expanded-card-container');
+        const expandedCardBackground = document.getElementById('expanded-card-background');
+        const expandedCardContent = document.getElementById('expanded-card-content');
+        
+        let expandedItem = null;
+
+        function expandItem(item) {
+            if (expandedItem) return;
+            
+            expandedItem = item;
+            const backgroundImage = item.querySelector('.info-item-background, .city-category-background').style.backgroundImage;
+            const detailContent = item.querySelector('.detail-content');
+            
+            detailContent.style.display = 'block';
+            expandedCardBackground.style.backgroundImage = backgroundImage;
+            expandedCardContent.innerHTML = detailContent.innerHTML;
+            expandedBackground.style.display = 'block';
+            expandedCardContainer.style.display = 'block';
+            
+            setTimeout(() => {
+                expandedCardContainer.classList.add('active');
+                backButton.classList.add('visible');
+                initVideoPlayers();
+                animateCardContent();
+                updateCardButtons();
+            }, 10);
+            
+            document.body.style.overflow = 'hidden';
+        }
+
+        function collapseItem() {
+            if (!expandedItem) return;
+            
+            document.querySelectorAll('.video-player video').forEach(video => {
+                video.pause();
+            });
+            
+            expandedCardContainer.classList.remove('active');
+            expandedBackground.style.display = 'none';
+            backButton.classList.remove('visible');
+            
+            setTimeout(() => {
+                expandedCardContainer.style.display = 'none';
+                expandedItem = null;
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
+        function animateCardContent() {
+            const elements = expandedCardContent.querySelectorAll('.detail-title, .detail-text, .detail-features, .gallery, .interactive-element, .card-buttons, .fact-bubble, .timeline');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    element.style.transition = 'all 0.5s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, 100 + (index * 100));
+            });
+        }
+
+        function updateCardButtons() {
+            const socialBtns = expandedCardContent.querySelectorAll('.show-social');
+            socialBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    socialModal.classList.add('active');
+                });
+            });
+
+            const cvBtns = expandedCardContent.querySelectorAll('.download-cv');
+            cvBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // CV modal code here
+                });
+            });
+
+            // Обработка интерактивных элементов
+            const interactiveElements = expandedCardContent.querySelectorAll('.interactive-element');
+            interactiveElements.forEach(element => {
+                element.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+            });
+        }
+
+        // ВИДЕО ПЛЕЕР
+        function initVideoPlayers() {
+            const videoPlayers = document.querySelectorAll('.video-player');
+            
+            videoPlayers.forEach(player => {
+                const video = player.querySelector('video');
+                const playPauseBtn = player.querySelector('.play-pause');
+                const volumeBtn = player.querySelector('.volume-btn');
+                const progressBar = player.querySelector('.progress-bar');
+                const progress = player.querySelector('.progress');
+                const currentTimeEl = player.querySelector('.current-time');
+                const totalTimeEl = player.querySelector('.total-time');
+                const fullscreenBtn = player.querySelector('.fullscreen-btn');
+                
+                // Форматирование времени
+                function formatTime(seconds) {
+                    const mins = Math.floor(seconds / 60);
+                    const secs = Math.floor(seconds % 60);
+                    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                }
+                
+                // Обновление времени
+                function updateTime() {
+                    currentTimeEl.textContent = formatTime(video.currentTime);
+                    totalTimeEl.textContent = formatTime(video.duration);
+                    progress.style.width = (video.currentTime / video.duration) * 100 + '%';
+                }
+                
+                // Воспроизведение/пауза
+                playPauseBtn.addEventListener('click', () => {
+                    if (video.paused) {
+                        video.play();
+                        playPauseBtn.textContent = '❚❚';
+                    } else {
+                        video.pause();
+                        playPauseBtn.textContent = '▶';
+                    }
+                });
+                
+                // Управление громкостью
+                volumeBtn.addEventListener('click', () => {
+                    if (video.muted) {
+                        video.muted = false;
+                        volumeBtn.textContent = '🔊';
+                    } else {
+                        video.muted = true;
+                        volumeBtn.textContent = '🔇';
+                    }
+                });
+                
+                // Перемотка
+                progressBar.addEventListener('click', (e) => {
+                    const rect = progressBar.getBoundingClientRect();
+                    const percent = (e.clientX - rect.left) / rect.width;
+                    video.currentTime = percent * video.duration;
+                });
+                
+                // Полноэкранный режим
+                fullscreenBtn.addEventListener('click', () => {
+                    if (!document.fullscreenElement) {
+                        player.requestFullscreen().catch(err => {
+                            console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                        });
+                    } else {
+                        document.exitFullscreen();
+                    }
+                });
+                
+                // Обновление времени при изменении
+                video.addEventListener('timeupdate', updateTime);
+                video.addEventListener('loadedmetadata', updateTime);
+                
+                // Сброс при завершении
+                video.addEventListener('ended', () => {
+                    playPauseBtn.textContent = '▶';
+                    video.currentTime = 0;
+                });
+                
+                // Автоматическое скрытие элементов управления
+                let controlsTimeout;
+                player.addEventListener('mousemove', () => {
+                    player.querySelector('.video-controls').style.opacity = '1';
+                    clearTimeout(controlsTimeout);
+                    controlsTimeout = setTimeout(() => {
+                        player.querySelector('.video-controls').style.opacity = '0';
+                    }, 3000);
+                });
+            });
+        }
+
+        // ВИДЕО СЛАЙДЕР
+        let currentSlide = 0;
+        const videos = document.querySelectorAll('.video-slide');
+        const indicators = document.querySelectorAll('.pixel-indicator');
+        let slideInterval;
+
+        function startSlider() {
+            clearInterval(slideInterval);
+            
+            // Сбрасываем все прогресс-бары
+            document.querySelectorAll('.pixel-progress').forEach(progress => {
+                progress.style.transition = 'none';
+                progress.style.width = '0%';
+            });
+
+            // Запускаем прогресс-бар для текущего слайда
+            setTimeout(() => {
+                const activeProgress = document.querySelector('.pixel-indicator.active .pixel-progress');
+                if (activeProgress) {
+                    activeProgress.style.transition = 'width 5s linear';
+                    activeProgress.style.width = '100%';
+                }
+            }, 50);
+
+            // Запускаем текущее видео
+            if (videos[currentSlide]) {
+                videos[currentSlide].play();
+            }
+            
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+
+        function nextSlide() {
+            if (videos.length === 0) return;
+            
+            // Останавливаем текущее видео
+            videos[currentSlide].pause();
+            videos[currentSlide].currentTime = 0;
+            
+            // Сбрасываем текущий слайд
+            videos[currentSlide].classList.remove('active');
+            indicators[currentSlide].classList.remove('active');
+            
+            // Переходим к следующему слайду
+            currentSlide = (currentSlide + 1) % videos.length;
+            
+            // Активируем новый слайд
+            videos[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+            
+            // Запускаем новое видео
+            videos[currentSlide].play();
+            
+            // Перезапускаем таймер
+            startSlider();
+        }
+
+        function goToSlide(slideIndex) {
+            if (videos.length === 0) return;
+            
+            // Останавливаем текущее видео
+            videos[currentSlide].pause();
+            videos[currentSlide].currentTime = 0;
+            
+            videos[currentSlide].classList.remove('active');
+            indicators[currentSlide].classList.remove('active');
+            
+            currentSlide = slideIndex;
+            
+            videos[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+            
+            // Запускаем выбранное видео
+            videos[currentSlide].play();
+            
+            startSlider();
+        }
+
+        // УПРАВЛЕНИЕ СТРАНИЦАМИ
+        let currentPage = 'home';
+        const infoPage = document.getElementById('info-page');
+        const cityPage = document.getElementById('city-page');
+        const mainSlider = document.getElementById('main-slider');
+        const pixelIndicatorsEl = document.getElementById('pixel-indicators');
+        const mainContent = document.getElementById('main-content');
+        const menuIcon = document.querySelector('.menu-icon');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+        const startButton = document.getElementById('start-button');
+
+        function showPage(page) {
+            currentPage = page;
+            
+            // Скрываем все страницы
+            infoPage.classList.remove('active');
+            cityPage.classList.remove('active');
+            mainSlider.style.display = 'none';
+            pixelIndicatorsEl.style.display = 'none';
+            mainContent.style.display = 'none';
+
+            // Закрываем меню при переходе
+            menuIcon.classList.remove('open');
+            dropdownMenu.classList.remove('open');
+
+            // Показываем нужную страницу
+            if (page === 'info') {
+                infoPage.classList.add('active');
+            } else if (page === 'city') {
+                cityPage.classList.add('active');
+            } else {
+                mainSlider.style.display = 'block';
+                pixelIndicatorsEl.style.display = 'flex';
+                mainContent.style.display = 'flex';
+                
+                // Перезапускаем слайдер при возврате на главную
+                if (page === 'home') {
+                    setTimeout(() => {
+                        goToSlide(0);
+                        startSlider();
+                    }, 100);
+                }
+            }
+
+            // Обновляем активные ссылки
+            document.querySelectorAll('.nav-link, .dropdown-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + page) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА
+        let currentLang = 'en';
+
+        function switchLanguage(lang) {
+            if (currentLang === lang) return;
+            
+            const transition = document.querySelector('.page-transition');
+            transition.classList.add('active');
+            
+            setTimeout(() => {
+                currentLang = lang;
+                document.documentElement.setAttribute('lang', lang);
+                
+                // Обновляем все тексты с атрибутами data-en и data-ru
+                document.querySelectorAll('[data-en][data-ru]').forEach(element => {
+                    const text = element.getAttribute(`data-${lang}`);
+                    if (text) {
+                        element.textContent = text;
+                    }
+                });
+                
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-lang') === lang) {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                localStorage.setItem('selectedLang', lang);
+                
+                setTimeout(() => transition.classList.remove('active'), 400);
+            }, 400);
+        }
+
+        // ОБРАБОТЧИКИ СОБЫТИЙ
+        infoItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (!expandedItem) {
+                    expandItem(this);
+                }
+            });
+        });
+
+        backButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            collapseItem();
+        });
+
+        expandedBackground.addEventListener('click', function(e) {
+            if (expandedItem) {
+                collapseItem();
+            }
+        });
+
+        // Клик по индикаторам
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                goToSlide(index);
+            });
+        });
+
+        // Кнопка "Explore Now"
+        startButton.addEventListener('click', function() {
+            showPage('info');
+        });
+
+        // Навигация
+        document.querySelectorAll('.nav-link, .dropdown-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetPage = this.getAttribute('href').substring(1);
+                showPage(targetPage);
+            });
+        });
+
+        // Клик по логотипу
+        document.getElementById('logo').addEventListener('click', () => {
+            showPage('home');
+        });
+
+        // Управление меню
+        menuIcon.addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('open');
+            dropdownMenu.classList.toggle('open');
+        });
+
+        // Закрытие меню при клике вне его
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.menu-icon') && !e.target.closest('.dropdown-menu')) {
+                menuIcon.classList.remove('open');
+                dropdownMenu.classList.remove('open');
+            }
+        });
+
+        // Переключение языка
+        document.querySelectorAll('.lang-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                switchLanguage(this.getAttribute('data-lang'));
+            });
+        });
+
+        // ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
+        function initializePage() {
+            // Запускаем главную страницу по умолчанию
+            showPage('home');
+            
+            // Восстанавливаем язык
+            const savedLang = localStorage.getItem('selectedLang');
+            if (savedLang && savedLang !== 'en') {
+                setTimeout(() => switchLanguage(savedLang), 100);
+            }
+            
+            // Запускаем слайдер
+            startSlider();
+            
+            // Инициализируем видео плееры
+            initVideoPlayers();
+        }
+
+        // Запуск инициализации
+        initializePage();
+    });
+    </script>
+</body>
+</html>
